@@ -3,12 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2008
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trading", "Trading\Trading.csproj", "{4729E363-D541-4FFA-9E39-6C899C6A52D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Trading", "Trading\Trading.csproj", "{4729E363-D541-4FFA-9E39-6C899C6A52D0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{31EC6B70-DF24-49FE-BE7C-B0EEA68B0E9D}"
 	ProjectSection(SolutionItems) = preProject
 		Readme.md = Readme.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YahooIPOScraper", "YahooIPOScraper\YahooIPOScraper.csproj", "{DFE3C96B-7479-47F1-ADE2-D975A9F5FA30}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YahooMostChangesStockScraper", "YahooMostChangesStockScraper\YahooMostChangesStockScraper.csproj", "{DF2476E6-DA63-4B32-B323-5783997DB647}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,6 +24,14 @@ Global
 		{4729E363-D541-4FFA-9E39-6C899C6A52D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4729E363-D541-4FFA-9E39-6C899C6A52D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4729E363-D541-4FFA-9E39-6C899C6A52D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFE3C96B-7479-47F1-ADE2-D975A9F5FA30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFE3C96B-7479-47F1-ADE2-D975A9F5FA30}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFE3C96B-7479-47F1-ADE2-D975A9F5FA30}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFE3C96B-7479-47F1-ADE2-D975A9F5FA30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF2476E6-DA63-4B32-B323-5783997DB647}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF2476E6-DA63-4B32-B323-5783997DB647}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF2476E6-DA63-4B32-B323-5783997DB647}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF2476E6-DA63-4B32-B323-5783997DB647}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
