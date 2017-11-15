@@ -1,18 +1,33 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2008
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Trading", "Trading\Trading.csproj", "{4729E363-D541-4FFA-9E39-6C899C6A52D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TradingCore", "Trading\TradingCore.csproj", "{4729E363-D541-4FFA-9E39-6C899C6A52D0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{31EC6B70-DF24-49FE-BE7C-B0EEA68B0E9D}"
 	ProjectSection(SolutionItems) = preProject
 		Readme.md = Readme.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YahooIPOScraper", "YahooIPOScraper\YahooIPOScraper.csproj", "{DFE3C96B-7479-47F1-ADE2-D975A9F5FA30}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YahooIPOScraper", "YahooIPOScraper\YahooIPOScraper.csproj", "{DFE3C96B-7479-47F1-ADE2-D975A9F5FA30}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YahooMostChangesStockScraper", "YahooMostChangesStockScraper\YahooMostChangesStockScraper.csproj", "{DF2476E6-DA63-4B32-B323-5783997DB647}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YahooMostChangesStockScraper", "YahooMostChangesStockScraper\YahooMostChangesStockScraper.csproj", "{DF2476E6-DA63-4B32-B323-5783997DB647}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DockerConfig", "DockerConfig", "{3C5739FD-885A-4382-8ED9-D9F533A22629}"
+	ProjectSection(SolutionItems) = preProject
+		DockerConfig\.env = DockerConfig\.env
+		DockerConfig\BuildStartTradingCore.sh = DockerConfig\BuildStartTradingCore.sh
+		DockerConfig\BuildStartYahooIPOScraper.sh = DockerConfig\BuildStartYahooIPOScraper.sh
+		DockerConfig\BuildStartYahooMostChangesStockScraper.sh = DockerConfig\BuildStartYahooMostChangesStockScraper.sh
+		DockerConfig\docker-compose-trading.yml = DockerConfig\docker-compose-trading.yml
+		DockerConfig\DockerfileDatabase = DockerConfig\DockerfileDatabase
+		DockerConfig\DockerfileTradingCore = DockerConfig\DockerfileTradingCore
+		DockerConfig\DockerfileYahooIPOScraper = DockerConfig\DockerfileYahooIPOScraper
+		DockerConfig\DockerfileYahooMostChangesStockScraper = DockerConfig\DockerfileYahooMostChangesStockScraper
+		DockerConfig\StartTrading.sh = DockerConfig\StartTrading.sh
+		DockerConfig\WaitForContStatHealthy.sh = DockerConfig\WaitForContStatHealthy.sh
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
