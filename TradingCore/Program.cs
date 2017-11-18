@@ -7,7 +7,7 @@ using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
 using NLog.LayoutRenderers;
 
-namespace YahooMostChangesStockScraper
+namespace TradingCore
 {
     public class Program
     {

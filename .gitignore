@@ -259,3 +259,9 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/TradingCore/internal-nlog.txt
+/TradingCore/TradingCoreLog.db3
+/YahooIPOScraper/YahooIPOScraperLog.db3
+/YahooIPOScraper/internal-nlog.txt
+/YahooMostChangesStockScraper/YahooMostChangesStockScraperLog.db3
+/YahooMostChangesStockScraper/internal-nlog.txt
