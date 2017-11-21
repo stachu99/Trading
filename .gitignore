@@ -265,3 +265,4 @@ __pycache__/
 /YahooIPOScraper/internal-nlog.txt
 /YahooMostChangesStockScraper/YahooMostChangesStockScraperLog.db3
 /YahooMostChangesStockScraper/internal-nlog.txt
+/YahooIPOScraper/YahooIPOScraperHangFireDB.db3
