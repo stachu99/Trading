@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using YahooIPOScraper.Services;
 using YahooIPOScraper.Models;
 using Newtonsoft.Json;
+using Microsoft.Extensions.Logging;
+using NLog.Web;
 
 namespace YahooIPOScraper.IPOController
 {
@@ -14,6 +16,12 @@ namespace YahooIPOScraper.IPOController
     [Route("api/[controller]")]
     public class IPOController : Controller
     {
+        private ILogger<IPOController> _logger;
+        public IPOController(ILogger<IPOController> logger)
+        {
+            _logger = logger;
+        }
+
         private IPOScraperService _iPOScraperService;
         // GET: api/IPO
         [HttpGet()]
@@ -21,8 +29,8 @@ namespace YahooIPOScraper.IPOController
         {
             _iPOScraperService = new IPOScraperService();
             var iPOResult = _iPOScraperService.GetIPOs(iPOQueryParameters);
+            _logger.LogInformation($"{nameof(iPOResult)} - {iPOResult.GetType()}, Count: {iPOResult.Count()}");
             return Ok(iPOResult);
         }
-        
     }
 }

@@ -15,18 +15,57 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YahooMostChangesStockScraper", "YahooMostChangesStockScraper\YahooMostChangesStockScraper.csproj", "{DF2476E6-DA63-4B32-B323-5783997DB647}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DockerConfig", "DockerConfig", "{3C5739FD-885A-4382-8ED9-D9F533A22629}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Development", "Development", "{8E1F7F85-DE24-4B34-A49A-3220B362D090}"
 	ProjectSection(SolutionItems) = preProject
-		DockerConfig\.env = DockerConfig\.env
-		DockerConfig\BuildStartTradingCore.sh = DockerConfig\BuildStartTradingCore.sh
-		DockerConfig\BuildStartYahooIPOScraper.sh = DockerConfig\BuildStartYahooIPOScraper.sh
-		DockerConfig\BuildStartYahooMostChangesStockScraper.sh = DockerConfig\BuildStartYahooMostChangesStockScraper.sh
-		DockerConfig\docker-compose-trading.yml = DockerConfig\docker-compose-trading.yml
-		DockerConfig\DockerfileDatabase = DockerConfig\DockerfileDatabase
-		DockerConfig\DockerfileTradingCore = DockerConfig\DockerfileTradingCore
-		DockerConfig\DockerfileYahooIPOScraper = DockerConfig\DockerfileYahooIPOScraper
-		DockerConfig\DockerfileYahooMostChangesStockScraper = DockerConfig\DockerfileYahooMostChangesStockScraper
-		DockerConfig\StartTrading.sh = DockerConfig\StartTrading.sh
-		DockerConfig\WaitForContStatHealthy.sh = DockerConfig\WaitForContStatHealthy.sh
+		DockerConfig\Development\.env = DockerConfig\Development\.env
+		DockerConfig\Development\BuildStartTradingCore.sh = DockerConfig\Development\BuildStartTradingCore.sh
+		DockerConfig\Development\BuildStartYahooIPOScraper.sh = DockerConfig\Development\BuildStartYahooIPOScraper.sh
+		DockerConfig\Development\BuildStartYahooMostChangesStockScraper.sh = DockerConfig\Development\BuildStartYahooMostChangesStockScraper.sh
+		DockerConfig\Development\docker-compose-trading.yml = DockerConfig\Development\docker-compose-trading.yml
+		DockerConfig\Development\DockerfileDatabase = DockerConfig\Development\DockerfileDatabase
+		DockerConfig\Development\DockerfileTradingCore = DockerConfig\Development\DockerfileTradingCore
+		DockerConfig\Development\DockerfileYahooIPOScraper = DockerConfig\Development\DockerfileYahooIPOScraper
+		DockerConfig\Development\DockerfileYahooMostChangesStockScraper = DockerConfig\Development\DockerfileYahooMostChangesStockScraper
+		DockerConfig\Development\StartTrading.sh = DockerConfig\Development\StartTrading.sh
+		DockerConfig\Development\WaitForContStatHealthy.sh = DockerConfig\Development\WaitForContStatHealthy.sh
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "!SensitiveData", "!SensitiveData", "{0A5B0481-63A2-4A56-B166-7BE7FDBD136D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DockerConfig", "DockerConfig", "{E7C94840-6CCF-411A-AFCF-9E0CA347A5BB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TradingCore", "TradingCore", "{6C267701-54B1-41A6-BA16-CCCB4658909D}"
+	ProjectSection(SolutionItems) = preProject
+		!SensitiveData\TradingCore\appSettings.Development.json = !SensitiveData\TradingCore\appSettings.Development.json
+		!SensitiveData\TradingCore\appSettings.Production.json = !SensitiveData\TradingCore\appSettings.Production.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "YahooIPOScraper", "YahooIPOScraper", "{25156034-EBB4-44B3-A06C-08C880D4229B}"
+	ProjectSection(SolutionItems) = preProject
+		!SensitiveData\YahooIPOScraper\appSettings.Development.json = !SensitiveData\YahooIPOScraper\appSettings.Development.json
+		!SensitiveData\YahooIPOScraper\appSettings.Production.json = !SensitiveData\YahooIPOScraper\appSettings.Production.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "YahooMostChangesStockScraper", "YahooMostChangesStockScraper", "{7829DAC3-6F53-411D-B645-D130D797A9AF}"
+	ProjectSection(SolutionItems) = preProject
+		!SensitiveData\YahooMostChangesStockScraper\appSettings.Development.json = !SensitiveData\YahooMostChangesStockScraper\appSettings.Development.json
+		!SensitiveData\YahooMostChangesStockScraper\appSettings.Production.json = !SensitiveData\YahooMostChangesStockScraper\appSettings.Production.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Production", "Production", "{435EF052-5DF8-4179-88C2-20795B12DC2F}"
+	ProjectSection(SolutionItems) = preProject
+		!SensitiveData\DockerConfig\Production\.env = !SensitiveData\DockerConfig\Production\.env
+		!SensitiveData\DockerConfig\Production\BuildStartTradingCore.sh = !SensitiveData\DockerConfig\Production\BuildStartTradingCore.sh
+		!SensitiveData\DockerConfig\Production\BuildStartYahooIPOScraper.sh = !SensitiveData\DockerConfig\Production\BuildStartYahooIPOScraper.sh
+		!SensitiveData\DockerConfig\Production\BuildStartYahooMostChangesStockScraper.sh = !SensitiveData\DockerConfig\Production\BuildStartYahooMostChangesStockScraper.sh
+		!SensitiveData\DockerConfig\Production\docker-compose-trading.yml = !SensitiveData\DockerConfig\Production\docker-compose-trading.yml
+		!SensitiveData\DockerConfig\Production\DockerfileDatabase = !SensitiveData\DockerConfig\Production\DockerfileDatabase
+		!SensitiveData\DockerConfig\Production\DockerfileTradingCore = !SensitiveData\DockerConfig\Production\DockerfileTradingCore
+		!SensitiveData\DockerConfig\Production\DockerfileYahooIPOScraper = !SensitiveData\DockerConfig\Production\DockerfileYahooIPOScraper
+		!SensitiveData\DockerConfig\Production\DockerfileYahooMostChangesStockScraper = !SensitiveData\DockerConfig\Production\DockerfileYahooMostChangesStockScraper
+		!SensitiveData\DockerConfig\Production\StartTrading.sh = !SensitiveData\DockerConfig\Production\StartTrading.sh
+		!SensitiveData\DockerConfig\Production\WaitForContStatHealthy.sh = !SensitiveData\DockerConfig\Production\WaitForContStatHealthy.sh
 	EndProjectSection
 EndProject
 Global
@@ -50,6 +89,14 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8E1F7F85-DE24-4B34-A49A-3220B362D090} = {3C5739FD-885A-4382-8ED9-D9F533A22629}
+		{E7C94840-6CCF-411A-AFCF-9E0CA347A5BB} = {0A5B0481-63A2-4A56-B166-7BE7FDBD136D}
+		{6C267701-54B1-41A6-BA16-CCCB4658909D} = {0A5B0481-63A2-4A56-B166-7BE7FDBD136D}
+		{25156034-EBB4-44B3-A06C-08C880D4229B} = {0A5B0481-63A2-4A56-B166-7BE7FDBD136D}
+		{7829DAC3-6F53-411D-B645-D130D797A9AF} = {0A5B0481-63A2-4A56-B166-7BE7FDBD136D}
+		{435EF052-5DF8-4179-88C2-20795B12DC2F} = {E7C94840-6CCF-411A-AFCF-9E0CA347A5BB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2D65AEA9-4FAB-41B9-A535-E7FD66EBAF2F}

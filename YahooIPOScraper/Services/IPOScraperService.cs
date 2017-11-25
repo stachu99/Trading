@@ -7,7 +7,7 @@ using YahooIPOScraper.Models;
 
 namespace YahooIPOScraper.Services
 {
-    public class IPOScraperService 
+    public class IPOScraperService
     {
         string _url = Startup.Configuration["YahooIPOUri:Url"];
 
@@ -15,11 +15,11 @@ namespace YahooIPOScraper.Services
         {
             IEnumerable<IPODto> allIPOs = ScrapIPOs(SetUrl(iPOQueryParameters.Day));
 
-                //_allIPOs = (from p in _allIPOs where iPOQueryParameters.Actions.Contains(p.Actions) select p);
+            //_allIPOs = (from p in _allIPOs where iPOQueryParameters.Actions.Contains(p.Actions) select p);
 
-                allIPOs = allIPOs.Select(x =>x)
-                    .Where(x => (iPOQueryParameters.Actions != null) ? iPOQueryParameters.Actions.Contains(x.Actions) : true)
-                    .Where(x => (iPOQueryParameters.Exchange != null) ? iPOQueryParameters.Exchange.Contains(x.Exchange) : true);
+            allIPOs = allIPOs.Select(x => x)
+                .Where(x => (iPOQueryParameters.Actions != null) ? iPOQueryParameters.Actions.Contains(x.Actions) : true)
+                .Where(x => (iPOQueryParameters.Exchange != null) ? iPOQueryParameters.Exchange.Contains(x.Exchange) : true);
 
             return allIPOs;
         }
@@ -28,7 +28,7 @@ namespace YahooIPOScraper.Services
         private string SetUrl(DateTime date)
         {
             string _urlQuery = Startup.Configuration["YahooIPOUri:UrlQuery"];
-            return _url+_urlQuery+date.ToString("yyyy-MM-dd");
+            return _url + _urlQuery + date.ToString("yyyy-MM-dd");
         }
 
         private IEnumerable<IPODto> ScrapIPOs(string url)

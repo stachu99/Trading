@@ -9,7 +9,7 @@ namespace YahooIPOScraper.Services
     {
         public DateTime Day { get; set; } = DateTime.Now.Date;
         public List<string> Actions { get; set; }
-        public List< string> Exchange { get; set; }
+        public List<string> Exchange { get; set; }
 
         //public bool HasQuery { get { return !String.IsNullOrEmpty(Query); } }
         //public string Query { get; set; }

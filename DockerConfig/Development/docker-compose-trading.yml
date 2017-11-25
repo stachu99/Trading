@@ -1,0 +1,75 @@
+networks: 
+  default_dev: 
+    driver: bridge
+    ipam: 
+      config: 
+        - subnet: 172.20.5.0/24
+      driver: default
+services:
+  database:
+    build:
+      context: .
+      dockerfile: DockerfileDatabase
+    container_name: Trading_Database_Dev
+    environment: 
+      MYSQL_ROOT_PASSWORD: strongpassword
+    image: trading_database_dev:5.7.20
+    networks: 
+      default_dev: 
+        ipv4_address: "172.20.5.2"
+    ports:
+      - "53306:3306"
+    restart: always
+    volumes:
+      - /var/lib/trading_dev/database:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping --silent"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+
+  tradingcore:
+    build:
+      context: .
+      dockerfile: DockerfileTradingCore
+    container_name: Trading_TradingCore_Dev
+    image: trading_tradingcore_dev:2.0
+    networks: 
+      default_dev: 
+        ipv4_address: "172.20.5.3"
+    ports: 
+      - "583:80"
+    volumes:
+      - /var/lib/trading_dev/TradingCore:/var/lib/trading/TradingCore
+    restart: always
+    
+  yahooiposcraper:
+    build:
+      context: .
+      dockerfile: DockerfileYahooIPOScraper
+    container_name: Trading_YahooIPOScraper_Dev
+    image: trading_yahooiposcraper_dev:2.0
+    networks: 
+      default_dev: 
+        ipv4_address: "172.20.5.4"
+    ports: 
+      - "584:80"
+    volumes:
+      - /var/lib/trading_dev/YahooIPOScraper:/var/lib/trading/YahooIPOScraper
+    restart: always
+
+  yahoomostchangesstockScraper:
+    build:
+      context: .
+      dockerfile: DockerfileYahooMostChangesStockScraper
+    container_name: Trading_YahooMostChangesStockScraper_Dev
+    image: trading_yahoomostchangesstockscraper_dev:2.0
+    networks: 
+      default_dev: 
+        ipv4_address: "172.20.5.5"
+    ports: 
+      - "585:80"
+    volumes:
+      - /var/lib/trading_dev/YahooMostChangesStockScraper:/var/lib/trading/YahooMostChangesStockScraper
+    restart: always
+version: '3.0'

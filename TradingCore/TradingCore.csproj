@@ -4,11 +4,8 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <AssemblyName>TradingCore</AssemblyName>
     <RootNamespace>TradingCore</RootNamespace>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="Properties\PublishProfiles\CustomProfile.pubxml" />
-  </ItemGroup>
 
   <ItemGroup>
     <Folder Include="wwwroot\" />
@@ -16,19 +13,14 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.3" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.0" />
     <PackageReference Include="NLog" Version="4.5.0-beta07" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.5.0-beta04" />
     <PackageReference Include="System.Data.SQLite" Version="1.0.106" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Update="appSettings.Development.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Update="appSettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="appSettings.Production.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="nlog.config">
@@ -37,9 +29,8 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="copy /Y D:\Projects\Trading\DockerConfig\* D:\Projects\!Publish\Trading\Release" />
+    <Exec Command="copy /Y $(SolutionDir)!SensitiveData\$(ProjectName)\appSettings.Production.json $(TargetDir)" />
+    <Exec Command="copy /Y $(SolutionDir)!SensitiveData\$(ProjectName)\appSettings.Development.json $(TargetDir)" />
   </Target>
-
-
-
+  
 </Project>
