@@ -32,8 +32,8 @@
     </ItemGroup>
   
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-      <Exec Command="copy /Y $(SolutionDir)!SensitiveData\$(ProjectName)\appSettings.Production.json $(TargetDir)" />
-      <Exec Command="copy /Y $(SolutionDir)!SensitiveData\$(ProjectName)\appSettings.Development.json $(TargetDir)" />
+      <Exec Command="copy /Y $(SolutionDir)!TradingSensitiveData\$(ProjectName)\appSettings.Production.json $(TargetDir)" />
+      <Exec Command="copy /Y $(SolutionDir)!TradingSensitiveData\$(ProjectName)\appSettings.Development.json $(TargetDir)" />
     </Target>
 
 </Project>

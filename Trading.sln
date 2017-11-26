@@ -31,7 +31,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Development", "Development"
 		DockerConfig\Development\WaitForContStatHealthy.sh = DockerConfig\Development\WaitForContStatHealthy.sh
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "!SensitiveData", "!SensitiveData", "{0A5B0481-63A2-4A56-B166-7BE7FDBD136D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "!TradingSensitiveData", "!TradingSensitiveData", "{0A5B0481-63A2-4A56-B166-7BE7FDBD136D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DockerConfig", "DockerConfig", "{E7C94840-6CCF-411A-AFCF-9E0CA347A5BB}"
 EndProject

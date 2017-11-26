@@ -20,7 +20,7 @@ namespace YahooIPOScraper
         {
             _logger = logger;
             var builder = new ConfigurationBuilder()
-                             .SetBasePath(env.ContentRootPath)
+                             //.SetBasePath(env.ContentRootPath)
                              .AddJsonFile("appSettings.json", optional: false, reloadOnChange: true)
                              .AddJsonFile($"appSettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
                              .AddEnvironmentVariables();
