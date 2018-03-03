@@ -261,15 +261,6 @@ __pycache__/
 *.pyc
 /TradingCore/internal-nlog.txt
 /TradingCore/TradingCoreLog.db3
-/YahooIPOScraper/YahooIPOScraperLog.db3
-/YahooIPOScraper/internal-nlog.txt
-/YahooMostChangesStockScraper/YahooMostChangesStockScraperLog.db3
-/YahooMostChangesStockScraper/internal-nlog.txt
-/YahooIPOScraper/YahooIPOScraperHangFireDB.db3
-/DockerConfig/Production
-/TradingCore/SensitiveData
-/YahooIPOScraper/SensitiveData
-/YahooMostChangesStockScraper/SensitiveData
-/SensitiveData
-/!SensitiveData
+/YahooScraper/YahooScraperLog.db3
+/YahooScraper/internal-nlog.txt
 /!TradingSensitiveData

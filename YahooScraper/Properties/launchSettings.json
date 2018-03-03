@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "YahooIPOScraper": {
+    "YahooScraper": {
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {

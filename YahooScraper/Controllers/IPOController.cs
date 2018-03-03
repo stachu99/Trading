@@ -4,13 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using YahooIPOScraper.Services;
-using YahooIPOScraper.Models;
+using YahooScraper.Services;
+using YahooScraper.Models;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
 
-namespace YahooIPOScraper.IPOController
+namespace YahooScraper.IPOController
 {
     [Produces("application/json")]
     [Route("api/[controller]")]
@@ -28,9 +28,23 @@ namespace YahooIPOScraper.IPOController
         public IActionResult Get(IPOQueryParameters iPOQueryParameters)
         {
             _iPOScraperService = new IPOScraperService();
+
+
             var iPOResult = _iPOScraperService.GetIPOs(iPOQueryParameters);
+            if (iPOResult == null)
+            {
+                _logger.LogWarning($"{nameof(IPOController)} - {nameof(iPOResult)} = null");
+                return NotFound();
+            }
+
             _logger.LogInformation($"{nameof(iPOResult)} - {iPOResult.GetType()}, Count: {iPOResult.Count()}");
             return Ok(iPOResult);
+
+
+
+
+
+
         }
     }
 }

@@ -1,7 +1,6 @@
-Updated: 2017.11.18
+Updated: 2018.03.03
 Private project to automatize some actions for a stock trading.
 
 Parts:
 TradingCore - main engine and database Mysql. Nlog to SQLite database. 
-YahooIPOscraper - extracts IPO data form Yahoo finance. Nlog to SQLite database..
-YahooMostChangesStockScraper - extracts data of the most gain and lose stock. Nlog to SQLite database.
+YahooScraper - extracts data form Yahoo finance, eg.: IPO, most changed stocks. Nlog to SQLite database..

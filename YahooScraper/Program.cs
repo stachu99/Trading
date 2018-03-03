@@ -7,7 +7,7 @@ using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
 using NLog.LayoutRenderers;
 
-namespace YahooMostChangesStockScraper
+namespace YahooScraper
 {
     public class Program
     {
@@ -27,7 +27,7 @@ namespace YahooMostChangesStockScraper
             EnsureDB();
             // NLog: setup the logger first to catch all errors
             var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
-
+            
             try
             {
                 logger.Debug("init main");

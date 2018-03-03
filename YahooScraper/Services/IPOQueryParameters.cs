@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace YahooIPOScraper.Services
+namespace YahooScraper.Services
 {
     public class IPOQueryParameters
     {

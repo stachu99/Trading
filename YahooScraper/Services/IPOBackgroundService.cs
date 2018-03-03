@@ -4,33 +4,38 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using YahooIPOScraper.Services;
+using YahooScraper.Services;
 
-namespace YahooIPOScraper.Services
+namespace YahooScraper.Services
 {
     public static class IPOBackgroundService
     {
         private static IPOQueryParameters _iPOQueryParameters;
         private static IPOScraperService _iPOScraperService;
-        private static Logger logger = LogManager.GetCurrentClassLogger();
-        public static void Start()
+        private static Logger _logger = LogManager.GetCurrentClassLogger();
+        public static void Run()
         {
-            logger.Info($"{nameof(IPOBackgroundService)} done");
+            _logger.Info($"{nameof(IPOBackgroundService)} done");
         }
 
-        public static async Task StartAsync()
+        public static async Task RunAsync()
         {
             _iPOQueryParameters = new IPOQueryParameters()
             {
                 Actions = Startup.Configuration["YahooIPOUri:ActionsParameter"].Split(",").ToList<string>(),
                 Exchange = Startup.Configuration["YahooIPOUri:ExchangeParameter"].Split(",").ToList<string>(),
-                Day = DateTime.Parse("2017-11-15")
             };
             _iPOScraperService = new IPOScraperService();
             var iPOResult = _iPOScraperService.GetIPOs(_iPOQueryParameters);
+            if (iPOResult == null)
+            {
+                _logger.Warn($"{nameof(IPOBackgroundService)} job done with {nameof(iPOResult)} = null");
+                return;
+            }
+
             if (iPOResult.Any())
             { await IPOSenderService.PostIPO(iPOResult); }
-            logger.Info($"{nameof(IPOBackgroundService)} job done");
+            _logger.Info($"{nameof(IPOBackgroundService)} job done, IPO count: {iPOResult.Count()}");
         }
 
 

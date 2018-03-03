@@ -8,9 +8,7 @@ container1="Trading_Database_Dev"
 servis2com="docker-compose up -d --build"
 servis2="tradingcore"
 servis3com="docker-compose up -d --build"
-servis3="yahooiposcraper"
-servis4com="docker-compose up -d --build"
-servis4="yahoomostchangesstockScraper"
+servis3="YahooScraper"
 
 echo Start $project Project ...
 echo command: $com
@@ -23,6 +21,4 @@ echo command: $servis2com $servis2
 $servis2com $servis2
 echo command: $servis3com $servis3
 $servis3com $servis3
-echo command: $servis4com $servis4
-$servis4com $servis4
 echo End of the script.

@@ -8,9 +8,9 @@ using Hangfire;
 using Hangfire.SQLite;
 using System;
 using Microsoft.AspNetCore.Mvc;
-using YahooIPOScraper.Services;
+using YahooScraper.Services;
 
-namespace YahooIPOScraper
+namespace YahooScraper
 {
     public class Startup
     {
@@ -52,14 +52,26 @@ namespace YahooIPOScraper
                 app.UseExceptionHandler();
             }
 
-            var backgroundJobServerOptions = new BackgroundJobServerOptions
-            {
-                WorkerCount = 1,
-            };
-            app.UseHangfireServer(backgroundJobServerOptions);
-            RecurringJob.AddOrUpdate(() => IPOBackgroundService.StartAsync(), Cron.Hourly);
-
             app.UseMvc();
+
+            try
+            {
+                var backgroundJobServerOptions = new BackgroundJobServerOptions
+                {
+                    WorkerCount = 1,
+                };
+                app.UseHangfireServer(backgroundJobServerOptions);
+#if DEBUG
+                RecurringJob.AddOrUpdate(() => IPOBackgroundService.RunAsync(), Cron.Minutely);
+#else
+                RecurringJob.AddOrUpdate(() => IPOBackgroundService.RunAsync(), Cron.Hourly);
+#endif
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "HangFireService stopped program");
+                throw;
+            }
 
         }
 
