@@ -40,11 +40,6 @@ namespace YahooScraper.IPOController
             _logger.LogInformation($"{nameof(iPOResult)} - {iPOResult.GetType()}, Count: {iPOResult.Count()}");
             return Ok(iPOResult);
 
-
-
-
-
-
-        }
+         }
     }
 }

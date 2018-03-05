@@ -11,7 +11,7 @@ namespace YahooScraper.Services
     public class IPOScraperService
     {
         private static Logger _logger = LogManager.GetCurrentClassLogger();
-        string _url = Startup.Configuration["YahooIPOUri:Url"];
+        string _uriHost = Startup.Configuration["YahooIPO:UriHost"];
 
         public IEnumerable<IPODto> GetIPOs(IPOQueryParameters iPOQueryParameters)
         {
@@ -24,7 +24,7 @@ namespace YahooScraper.Services
             }
             allIPOs = allIPOs.Select(x => x)
                 .Where(x => (iPOQueryParameters.Actions != null) ? iPOQueryParameters.Actions.Contains(x.Actions) : true)
-                .Where(x => (iPOQueryParameters.Exchange != null) ? iPOQueryParameters.Exchange.Contains(x.Exchange) : true);
+                .Where(x => (iPOQueryParameters.Exchanges != null) ? iPOQueryParameters.Exchanges.Contains(x.Exchange) : true);
 
             return allIPOs;
         }
@@ -32,8 +32,9 @@ namespace YahooScraper.Services
 
         private string SetUrl(DateTime date)
         {
-            string _urlQuery = Startup.Configuration["YahooIPOUri:UrlQuery"];
-            return _url + _urlQuery + date.ToString("yyyy-MM-dd");
+            string _uriPath = Startup.Configuration["YahooIPO:UriPath"];
+            string _uriQuery = Startup.Configuration["YahooIPO:UriQuery"];
+            return _uriHost + _uriPath + _uriQuery +  date.ToString("yyyy-MM-dd");
         }
 
         private IEnumerable<IPODto> ScrapIPOs(string url)
@@ -50,15 +51,16 @@ namespace YahooScraper.Services
                 IPODto iPO;
                 foreach (var node in nodes)
                 {
-                    var nodeUrlQuery = node.ChildNodes.ElementAt(0).FirstChild.GetAttributeValue("href", "");
-                    if (nodeUrlQuery != "")
+                    var nodeUriPath = node.ChildNodes.ElementAt(0).FirstChild.GetAttributeValue("href", "");
+                    string nodeUri = "";
+                    if (nodeUriPath != "")
                     {
-                        nodeUrlQuery = _url + nodeUrlQuery;
+                        nodeUri = _uriHost + nodeUriPath;
                     }
                     iPO = new IPODto
                     {
                         Symbol = node.ChildNodes.ElementAt(0).FirstChild.GetAttributeValue("data-symbol", ""),
-                        Url = nodeUrlQuery,
+                        Url = nodeUri,
                         Company = node.ChildNodes.ElementAt(1).InnerHtml,
                         Exchange = node.ChildNodes.ElementAt(2).InnerHtml,
                         Date = node.ChildNodes.ElementAt(3).FirstChild.InnerHtml,

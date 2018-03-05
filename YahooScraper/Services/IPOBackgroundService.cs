@@ -22,8 +22,8 @@ namespace YahooScraper.Services
         {
             _iPOQueryParameters = new IPOQueryParameters()
             {
-                Actions = Startup.Configuration["YahooIPOUri:ActionsParameter"].Split(",").ToList<string>(),
-                Exchange = Startup.Configuration["YahooIPOUri:ExchangeParameter"].Split(",").ToList<string>(),
+                Actions = Startup.Configuration["YahooIPO:BackgroudServiceQueryParameters:Actions"].Split(",").ToList<string>(),
+                Exchanges = Startup.Configuration["YahooIPO:BackgroudServiceQueryParameters:Exchanges"].Split(",").ToList<string>(),
             };
             _iPOScraperService = new IPOScraperService();
             var iPOResult = _iPOScraperService.GetIPOs(_iPOQueryParameters);
