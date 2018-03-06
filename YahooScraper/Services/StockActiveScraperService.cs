@@ -18,8 +18,7 @@ namespace YahooScraper.Services
 
             IEnumerable<StockActiveDto> allStockActives = await ScrapStockActives(stockActiveQueryParameters.Countries);
 
-           //var test = allStockActives.OrderBy(x => x.ChangePercentage);
-                //_allIPOs = (from p in _allIPOs where iPOQueryParameters.Actions.Contains(p.Actions) select p);
+            //_allIPOs = (from p in _allIPOs where iPOQueryParameters.Actions.Contains(p.Actions) select p);
             if (allStockActives == null)
             {
                 return null;
@@ -130,13 +129,17 @@ namespace YahooScraper.Services
             decimal? parsedValue = null;
             switch (stringToDecimalParse.Trim().ToLowerInvariant().Last<char>())
             {
+                case 'm':
+                    valueToParse = decimal.Parse(stringToDecimalParse.Trim().ToLowerInvariant().Replace("m", string.Empty));
+                    parsedValue = valueToParse * 1000000;
+                    break;
                 case 'b':
                     valueToParse = decimal.Parse(stringToDecimalParse.Trim().ToLowerInvariant().Replace("b", string.Empty));
                     parsedValue = valueToParse * 1000000000;
                     break;
-                case 'm':
-                    valueToParse = decimal.Parse(stringToDecimalParse.Trim().ToLowerInvariant().Replace("m", string.Empty));
-                    parsedValue = valueToParse * 1000000;
+                case 't':
+                    valueToParse = decimal.Parse(stringToDecimalParse.Trim().ToLowerInvariant().Replace("t", string.Empty));
+                    parsedValue = valueToParse * 1000000000000;
                     break;
                 case 'a':
                      parsedValue = null;
