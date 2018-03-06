@@ -1,0 +1,48 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
+
+namespace YahooScraper.Controllers
+{
+    [Produces("application/json")]
+    [Route("api/Test")]
+    public class TestController : Controller
+    {
+        // GET: api/Test
+        [HttpGet]
+        public string GetCurrentCultureDate()
+        {
+
+                return $"DateTime.Now: {DateTime.Now.ToString()}, CurrentCulture.Name: {CultureInfo.CurrentCulture.Name}"; 
+        }
+
+        // GET: api/Test/5
+        [HttpGet("{id}", Name = "Get")]
+        public string Get(int id)
+        {
+            return "value";
+        }
+        
+        // POST: api/Test
+        [HttpPost]
+        public void Post([FromBody]string value)
+        {
+        }
+        
+        // PUT: api/Test/5
+        [HttpPut("{id}")]
+        public void Put(int id, [FromBody]string value)
+        {
+        }
+        
+        // DELETE: api/ApiWithActions/5
+        [HttpDelete("{id}")]
+        public void Delete(int id)
+        {
+        }
+    }
+}

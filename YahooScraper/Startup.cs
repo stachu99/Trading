@@ -9,6 +9,9 @@ using Hangfire.SQLite;
 using System;
 using Microsoft.AspNetCore.Mvc;
 using YahooScraper.Services;
+using Microsoft.AspNetCore.Localization;
+using System.Collections.Generic;
+using System.Globalization;
 
 namespace YahooScraper
 {
@@ -32,6 +35,18 @@ namespace YahooScraper
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            //services.Configure<RequestLocalizationOptions>(options =>
+            //{
+            //    options.DefaultRequestCulture = new RequestCulture("en-US");
+            //});
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                options.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("en-GB");
+                //By default the below will be set to whatever the server culture is. 
+                options.SupportedCultures = new List<CultureInfo> { new CultureInfo("en-GB")};
+                options.RequestCultureProviders = new List<IRequestCultureProvider>();
+            });
+
             // HangFire configured to use a NLog database
             services.AddHangfire(x => x.UseSQLiteStorage(Configuration.GetValue<string>("NLog:NLogConnectionString")));
 
@@ -43,6 +58,7 @@ namespace YahooScraper
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            app.UseRequestLocalization();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

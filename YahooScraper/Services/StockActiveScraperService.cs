@@ -83,6 +83,7 @@ namespace YahooScraper.Services
                     if (nodes == null)
                         return StockActiveList;
                     StockActiveDto stockActiveDto;
+                    int i = 0;
                     foreach (var node in nodes)
                     {
                         var nodeUriPath = node.ChildNodes.ElementAt(1).FirstChild.GetAttributeValue("href", "");
@@ -96,15 +97,15 @@ namespace YahooScraper.Services
                             Symbol = node.ChildNodes.ElementAt(1).FirstChild.InnerText,
                             Url = nodeUri,
                             Name = node.ChildNodes.ElementAt(2).InnerText,
-                            Price = node.ChildNodes.ElementAt(3).FirstChild.InnerText,
-                            Change = node.ChildNodes.ElementAt(4).FirstChild.InnerText,
-                            ChangePercentage = node.ChildNodes.ElementAt(5).FirstChild.InnerText,
-                            Volume = node.ChildNodes.ElementAt(6).InnerText,
-                            AvgVol3Mth = node.ChildNodes.ElementAt(7).InnerText,
-                            MarketCap = node.ChildNodes.ElementAt(8).InnerText,
-                            PERatioTTM = node.ChildNodes.ElementAt(9).FirstChild.InnerText ?? node.ChildNodes.ElementAt(9).InnerText,
-                            Week52Range = node.ChildNodes.ElementAt(10).InnerText
-
+                            Price = StrToDecParse(node.ChildNodes.ElementAt(3).FirstChild.InnerText),
+                            Change = StrToDecParse(node.ChildNodes.ElementAt(4).FirstChild.InnerText),
+                            ChangePercentage = StrToDecParse(node.ChildNodes.ElementAt(5).FirstChild.InnerText.Replace("%",string.Empty)),
+                            Volume = StrToDecParse(node.ChildNodes.ElementAt(6).InnerText),
+                            AvgVol3Mth = StrToDecParse(node.ChildNodes.ElementAt(7).InnerText),
+                            MarketCap = StrToDecParse(node.ChildNodes.ElementAt(8).InnerText),
+                            PERatioTTM = StrToDecParse((node.ChildNodes.ElementAt(9).FirstChild.InnerText ?? node.ChildNodes.ElementAt(9).InnerText)),
+                            //Week52Range = node.ChildNodes.ElementAt(10).InnerText - there is a picture loaded by JS.
+                            Week52Range = string.Empty
                         };
 
                         StockActiveList.Add(stockActiveDto);
@@ -123,6 +124,29 @@ namespace YahooScraper.Services
 
         }
 
+        private decimal? StrToDecParse(string stringToDecimalParse)
+        {
+            decimal? valueToParse = null;
+            decimal? parsedValue = null;
+            switch (stringToDecimalParse.Trim().ToLowerInvariant().Last<char>())
+            {
+                case 'b':
+                    valueToParse = decimal.Parse(stringToDecimalParse.Trim().ToLowerInvariant().Replace("b", string.Empty));
+                    parsedValue = valueToParse * 1000000000;
+                    break;
+                case 'm':
+                    valueToParse = decimal.Parse(stringToDecimalParse.Trim().ToLowerInvariant().Replace("m", string.Empty));
+                    parsedValue = valueToParse * 1000000;
+                    break;
+                case 'a':
+                     parsedValue = null;
+                    break;
+                default:
+                    parsedValue = decimal.Parse(stringToDecimalParse.Trim());
+                    break;
+            }
 
+            return parsedValue;
+        }
     }
 }
