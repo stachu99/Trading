@@ -3,7 +3,6 @@ using NLog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Dynamic;
 using System.Threading.Tasks;
 using YahooScraper.Models;
 
@@ -83,7 +82,6 @@ namespace YahooScraper.Services
                     if (nodes == null)
                         return StockActiveList;
                     StockActiveDto stockActiveDto;
-                    int i = 0;
                     foreach (var node in nodes)
                     {
                         var nodeUriPath = node.ChildNodes.ElementAt(1).FirstChild.GetAttributeValue("href", "");

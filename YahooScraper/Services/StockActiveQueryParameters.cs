@@ -7,7 +7,7 @@ namespace YahooScraper.Services
 {
     public class StockActiveQueryParameters
     {
-        public List<string> Countries { get; set; } = Startup.Configuration["YahooStockActive:DeafaultQueryParameters:Countries"].Split(new char[] {',',' '},StringSplitOptions.RemoveEmptyEntries).ToList();
+        public List<string> Countries { get; set; } = Startup.Configuration["YahooStockActive:DefaultQueryParameters:Countries"].Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
         public string OrderBy { get; set; }
         private bool _descending = false;
         public bool Descending
