@@ -1,5 +1,6 @@
-servis2com="docker-compose up -d --build --force-recreate"
-servis2="tradingcore"
+#!/bin/bash
+servis3com="docker-compose up -d --build --force-recreate"
+servis3="TradingCore"
 
-echo command: $servis2com $servis2
-$servis2com $servis2
+echo command: $servis3com $servis3
+$servis3com $servis3

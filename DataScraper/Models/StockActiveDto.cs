@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace YahooScraper.Models
+namespace DataScraper.Models
 {
     public class StockActiveDto
     {

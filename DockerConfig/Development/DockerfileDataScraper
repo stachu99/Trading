@@ -1,6 +1,6 @@
 FROM microsoft/aspnetcore:latest
-WORKDIR /ap
+WORKDIR /app
 EXPOSE 80
 ENV ASPNETCORE_ENVIRONMENT Development
-COPY ./TradingCore .
-ENTRYPOINT ["dotnet", "TradingCore.dll"]
+COPY ./DataScraper . 
+ENTRYPOINT ["dotnet", "DataScraper.dll"]

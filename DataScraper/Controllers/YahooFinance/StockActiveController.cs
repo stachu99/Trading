@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using YahooScraper.Services;
+using DataScraper.Services;
 
-namespace YahooScraper.Controllers
+namespace DataScraper.Controllers
 {
     [Produces("application/json")]
-    [Route("api/StockActive")]
+    [Route("api/YahooFinance/StockActive")]
     public class StockActiveController : Controller
     {
         private ILogger<StockActiveController> _logger;

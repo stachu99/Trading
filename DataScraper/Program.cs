@@ -7,7 +7,7 @@ using Microsoft.Data.Sqlite;
 using Microsoft.Extensions.Configuration;
 using NLog.LayoutRenderers;
 
-namespace YahooScraper
+namespace DataScraper
 {
     public class Program
     {
@@ -23,11 +23,11 @@ namespace YahooScraper
             configuration = builder.Build();
             LayoutRenderer.Register("NLogConnectionString", (logEvent) => configuration.GetValue<string>("NLog:NLogConnectionString"));
             LayoutRenderer.Register("NlogDB", (logEvent) => configuration.GetValue<string>("NLog:NLogDB"));
-            // NLog: Database for logging 
+            // NLog: Database for logging
             EnsureDB();
             // NLog: setup the logger first to catch all errors
             var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
-            
+
             try
             {
                 logger.Debug("init main");

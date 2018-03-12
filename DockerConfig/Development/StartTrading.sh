@@ -1,16 +1,23 @@
 #!/bin/bash
 project="Trading"
+directoryPath="/var/lib/Trading_dev"
+
 com="docker-compose down"
 servis1com="docker-compose up -d --build"
-servis1="database"
+servis1="Database"
 container1com="bash WaitForContStatHealthy.sh"
 container1="Trading_Database_Dev"
 servis2com="docker-compose up -d --build"
-servis2="tradingcore"
+servis2="TradingCore"
 servis3com="docker-compose up -d --build"
-servis3="YahooScraper"
+servis3="DataScraper"
 
 echo Start $project Project ...
+mkdir $directoryPath
+mkdir $directoryPath/Database
+mkdir $directoryPath/TradingCore
+mkdir $directoryPath/DataScraper
+
 echo command: $com
 $com
 echo command: $servis1com $servis1

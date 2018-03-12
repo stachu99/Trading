@@ -8,12 +8,12 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using YahooScraper.Models;
+using DataScraper.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
 
-namespace YahooScraper.Services
+namespace DataScraper.Services
 {
     public static class IPOSenderService
     {
@@ -27,7 +27,16 @@ namespace YahooScraper.Services
                     _logger.Info($"No data to post. {iPOs.GetType()} count:{iPOs.Count()}");
                     return;
                 }
-                var servisAddress = new Uri(Startup.Configuration["TradingCore:Url"] + Startup.Configuration["TradingCore:API:IPO"]);
+
+                UriBuilder ub = new UriBuilder()
+                {
+                    Scheme = Startup.Configuration["TradingCore:UriScheme"],
+                    Host = Startup.Configuration["TradingCore:UriHost"],
+                    Port = Int16.Parse(Startup.Configuration["TradingCore:UriPort"]),
+                    Path = Startup.Configuration["TradingCore:UriPath:YahooIPO"]
+                };
+                var servisAddress = ub.Uri;
+
                 var client = new HttpClient
                 {
                     BaseAddress = servisAddress

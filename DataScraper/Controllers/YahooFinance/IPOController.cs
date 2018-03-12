@@ -4,16 +4,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using YahooScraper.Services;
-using YahooScraper.Models;
+using DataScraper.Services;
+using DataScraper.Models;
 using Newtonsoft.Json;
 using Microsoft.Extensions.Logging;
 using NLog.Web;
 
-namespace YahooScraper.IPOController
+namespace DataScraper.IPOController
 {
     [Produces("application/json")]
-    [Route("api/[controller]")]
+    [Route("api/YahooFinance/[controller]")]
     public class IPOController : Controller
     {
         private ILogger<IPOController> _logger;
@@ -23,7 +23,7 @@ namespace YahooScraper.IPOController
         }
 
         private IPOScraperService _iPOScraperService;
-        // GET: api/IPO
+        // GET: api/YahooFinance/IPO
         [HttpGet()]
         public IActionResult Get(IPOQueryParameters iPOQueryParameters)
         {

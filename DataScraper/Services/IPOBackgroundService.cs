@@ -4,9 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using YahooScraper.Services;
+using DataScraper.Services;
 
-namespace YahooScraper.Services
+namespace DataScraper.Services
 {
     public static class IPOBackgroundService
     {
@@ -22,8 +22,8 @@ namespace YahooScraper.Services
         {
             _iPOQueryParameters = new IPOQueryParameters()
             {
-                Actions = Startup.Configuration["YahooIPO:BackgroudServiceQueryParameters:Actions"].Split(",").ToList<string>(),
-                Exchanges = Startup.Configuration["YahooIPO:BackgroudServiceQueryParameters:Exchanges"].Split(",").ToList<string>(),
+                Actions = Startup.Configuration["YahooFinance:YahooIPO:BackgroudServiceQueryParameters:Actions"].Split(",").ToList<string>(),
+                Exchanges = Startup.Configuration["YahooFinance:YahooIPO:BackgroudServiceQueryParameters:Exchanges"].Split(",").ToList<string>(),
             };
             _iPOScraperService = new IPOScraperService();
             var iPOResult = _iPOScraperService.GetIPOs(_iPOQueryParameters);

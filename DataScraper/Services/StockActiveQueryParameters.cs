@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace YahooScraper.Services
+namespace DataScraper.Services
 {
     public class StockActiveQueryParameters
     {
-        public List<string> Countries { get; set; } = Startup.Configuration["YahooStockActive:DefaultQueryParameters:Countries"].Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+        public List<string> Countries { get; set; } = Startup.Configuration["YahooFinance:YahooStockActive:DefaultQueryParameters:Countries"].Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries).ToList();
         public string OrderBy { get; set; }
         private bool _descending = false;
         public bool Descending

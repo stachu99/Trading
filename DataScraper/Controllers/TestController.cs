@@ -4,42 +4,42 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using TradingCore.Models;
+using System.Globalization;
 
-namespace TradingCore.Conrollers
+namespace DataScraper.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Yahoo/IPO")]
-    public class IPOController : Controller
+    [Route("api/Test")]
+    public class TestController : Controller
     {
-        // GET: api/Yahoo/IPO
+        // GET: api/Test
         [HttpGet]
-        public IEnumerable<string> Get()
+        public string GetCurrentCultureDate()
         {
-            return new string[] { "value1", "value2" };
+
+                return $"DateTime.Now: {DateTime.Now.ToString()}, CurrentCulture.Name: {CultureInfo.CurrentCulture.Name}";
         }
 
-        // GET: api/Yahoo/IPO/5
+        // GET: api/Test/5
         [HttpGet("{id}", Name = "Get")]
         public string Get(int id)
         {
             return "value";
         }
-        
-        // POST: api/Yahoo/IPO
+
+        // POST: api/Test
         [HttpPost]
-        public IActionResult Post([FromBody]IEnumerable<IPODts> iPOForCreate)
+        public void Post([FromBody]string value)
         {
-            return Ok(iPOForCreate);
         }
-        
-        // PUT: api/Yahoo/IPO/5
+
+        // PUT: api/Test/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]string value)
         {
         }
-        
-        // DELETE: api/Yahoo/ApiWithActions/5
+
+        // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {

@@ -8,12 +8,12 @@ using Hangfire;
 using Hangfire.SQLite;
 using System;
 using Microsoft.AspNetCore.Mvc;
-using YahooScraper.Services;
+using DataScraper.Services;
 using Microsoft.AspNetCore.Localization;
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace YahooScraper
+namespace DataScraper
 {
     public class Startup
     {
@@ -42,7 +42,7 @@ namespace YahooScraper
             services.Configure<RequestLocalizationOptions>(options =>
             {
                 options.DefaultRequestCulture = new Microsoft.AspNetCore.Localization.RequestCulture("en-GB");
-                //By default the below will be set to whatever the server culture is. 
+                //By default the below will be set to whatever the server culture is.
                 options.SupportedCultures = new List<CultureInfo> { new CultureInfo("en-GB")};
                 options.RequestCultureProviders = new List<IRequestCultureProvider>();
             });

@@ -4,14 +4,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using YahooScraper.Models;
+using DataScraper.Models;
 
-namespace YahooScraper.Services
+namespace DataScraper.Services
 {
     public class StockActiveScraperService
     {
         private static Logger _logger = LogManager.GetCurrentClassLogger();
-        string _uriHost = Startup.Configuration["YahooStockActive:UriHost"];
+        string _uriHost = Startup.Configuration["YahooFinance:UriHost"];
 
         public async Task<IEnumerable<StockActiveDto>> GetStockActives(StockActiveQueryParameters stockActiveQueryParameters)
         {
@@ -32,16 +32,17 @@ namespace YahooScraper.Services
 
         private Uri SetUri(string country)
         {
-            string _uriScheme = Startup.Configuration["YahooStockActive:UriScheme"];
-            int _uriPort = Int16.Parse(Startup.Configuration["YahooStockActive:UriPort"]);
-            string _uriSubDomainCountry = Startup.Configuration[$"YahooStockActive:UriSubDomainCountry:{country}"];
-            string _uriHost = String.IsNullOrWhiteSpace(_uriSubDomainCountry) ? Startup.Configuration["YahooStockActive:UriHost"] : $"{_uriSubDomainCountry}.{Startup.Configuration["YahooStockActive:UriHost"]}";
-            string _uriPath = Startup.Configuration["YahooStockActive:UriPath"];
-            UriBuilder uriBuilder = new UriBuilder(_uriScheme, _uriHost, _uriPort, _uriPath);
-            return uriBuilder.Uri;
+            UriBuilder ub = new UriBuilder
+            {
+                Scheme = Startup.Configuration["YahooFinance:UriScheme"],
+                Host = _uriHost,
+                Port = Int16.Parse(Startup.Configuration["YahooFinance:UriPort"]),
+                Path = Startup.Configuration["YahooFinance:YahooStockActive:UriPath"]
+            };
+            return ub.Uri;
         }
 
-        
+
         public async Task<IEnumerable<StockActiveDto>> ScrapStockActives(List<string> countries)
         {
             List<StockActiveDto> StockActiveList;
@@ -107,7 +108,7 @@ namespace YahooScraper.Services
                         };
 
                         StockActiveList.Add(stockActiveDto);
-                    } 
+                    }
                 }
             }
             catch (Exception e)

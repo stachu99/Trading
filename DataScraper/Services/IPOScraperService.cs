@@ -4,14 +4,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using YahooScraper.Models;
+using DataScraper.Models;
 
-namespace YahooScraper.Services
+namespace DataScraper.Services
 {
     public class IPOScraperService
     {
         private static Logger _logger = LogManager.GetCurrentClassLogger();
-        string _uriHost = Startup.Configuration["YahooIPO:UriHost"];
+        string _uriHost = Startup.Configuration["YahooFinance:UriHost"];
 
         public IEnumerable<IPODto> GetIPOs(IPOQueryParameters iPOQueryParameters)
         {
@@ -30,20 +30,26 @@ namespace YahooScraper.Services
         }
 
 
-        private string SetUrl(DateTime date)
+        private Uri SetUrl(DateTime date)
         {
-            string _uriPath = Startup.Configuration["YahooIPO:UriPath"];
-            string _uriQuery = Startup.Configuration["YahooIPO:UriQuery"];
-            return _uriHost + _uriPath + _uriQuery +  date.ToString("yyyy-MM-dd");
+            UriBuilder ub = new UriBuilder
+            {
+                Scheme = Startup.Configuration["YahooFinance:UriScheme"],
+                Host = _uriHost,
+                Port = Int16.Parse(Startup.Configuration["YahooFinance:UriPort"]),
+                Path = Startup.Configuration["YahooFinance:YahooIPO:UriPath"],
+                Query = Startup.Configuration["YahooFinance:YahooIPO:UriQuery"] + date.ToString("yyyy-MM-dd")
+            };
+            return ub.Uri;
         }
 
-        private IEnumerable<IPODto> ScrapIPOs(string url)
+        private IEnumerable<IPODto> ScrapIPOs(Uri uri)
         {
             List<IPODto> iPOList;
             try
             {
                 var web1 = new HtmlWeb();
-                var doc1 = web1.Load(url);
+                var doc1 = web1.Load(uri);
                 var nodes = doc1.DocumentNode.SelectNodes("//*[@id=\"fin-cal-table\"]/div[1]/div/table/tbody/tr");
                 iPOList = new List<IPODto>();
                 if (nodes==null)
