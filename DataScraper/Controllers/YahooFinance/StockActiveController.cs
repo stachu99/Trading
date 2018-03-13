@@ -29,7 +29,7 @@ namespace DataScraper.Controllers
 
             _StockActiveScraperService = new StockActiveScraperService();
 
-            var StockActiveResult = await _StockActiveScraperService.GetStockActives(stockActiveQueryParameters);
+            var StockActiveResult = _StockActiveScraperService.GetStockActives(stockActiveQueryParameters);
             if (StockActiveResult == null)
             {
                 _logger.LogWarning($"{nameof(StockActiveController)} - {nameof(StockActiveResult)} = null");

@@ -26,7 +26,8 @@ namespace DataScraper
             // NLog: Database for logging
             EnsureDB();
             // NLog: setup the logger first to catch all errors
-            var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
+            //var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger(); - OBSOLETE
+            var logger = NLog.LogManager.LoadConfiguration("nlog.config").GetCurrentClassLogger();
 
             try
             {

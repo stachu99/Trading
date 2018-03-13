@@ -5,6 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DataScraper.Models;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Remote;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 
 namespace DataScraper.Services
 {
@@ -13,10 +17,10 @@ namespace DataScraper.Services
         private static Logger _logger = LogManager.GetCurrentClassLogger();
         string _uriHost = Startup.Configuration["YahooFinance:UriHost"];
 
-        public async Task<IEnumerable<StockActiveDto>> GetStockActives(StockActiveQueryParameters stockActiveQueryParameters)
+        public IEnumerable<StockActiveDto> GetStockActives(StockActiveQueryParameters stockActiveQueryParameters)
         {
 
-            IEnumerable<StockActiveDto> allStockActives = await ScrapStockActives(stockActiveQueryParameters.Countries);
+            IEnumerable<StockActiveDto> allStockActives = ScrapStockActives(stockActiveQueryParameters.Countries);
 
             //_allIPOs = (from p in _allIPOs where iPOQueryParameters.Actions.Contains(p.Actions) select p);
             if (allStockActives == null)
@@ -35,7 +39,7 @@ namespace DataScraper.Services
             UriBuilder ub = new UriBuilder
             {
                 Scheme = Startup.Configuration["YahooFinance:UriScheme"],
-                Host = _uriHost,
+                Host = (!string.IsNullOrEmpty(Startup.Configuration["YahooFinance:UriSubDomainCountry:" + country])) ? Startup.Configuration["YahooFinance:UriSubDomainCountry:"+country]+ "."+ _uriHost : _uriHost,
                 Port = Int16.Parse(Startup.Configuration["YahooFinance:UriPort"]),
                 Path = Startup.Configuration["YahooFinance:YahooStockActive:UriPath"]
             };
@@ -43,7 +47,7 @@ namespace DataScraper.Services
         }
 
 
-        public async Task<IEnumerable<StockActiveDto>> ScrapStockActives(List<string> countries)
+        public IEnumerable<StockActiveDto> ScrapStockActives(List<string> countries)
         {
             List<StockActiveDto> StockActiveList;
             try
@@ -54,33 +58,61 @@ namespace DataScraper.Services
                     Uri uri = SetUri(c);
                     int pageCount = 100;
                     int pageOffset = 0;
-                    int matchingResults = 0;
-                    int lastRecord = 0;
                     HtmlNodeCollection nodes = new HtmlNodeCollection(null);
+                        var options = new ChromeOptions();
+                        // set some options
+                        options.ToCapabilities();
+                        //IWebDriver driver = new RemoteWebDriver(new Uri(""), options); for remote in a Docker container
+                        //Local Chrome driver for debug mode
+                        IWebDriver driver = new ChromeDriver(Environment.CurrentDirectory + "\\ThirdPart\\Selenium\\ChromeDriver", options)
+                        {
+                            Url = uri.ToString() + $"?offset={pageOffset}&count={pageCount}"
+                        };
+                        IWebElement element;
+                        driver.FindElement(By.XPath("//*[@id=\"screener-criteria\"]/div[2]/div[1]/div/button[1]")).Click();
+                        driver.FindElement(By.XPath("//*[@id=\"screener-criteria\"]/div[2]/div[1]/div[1]/div[1]/div/div[2]/ul/li[1]/button")).Click();
+                        driver.FindElement(By.XPath("//*[@id=\"screener-criteria\"]/div[2]/div[1]/div[1]/div[1]/div/div[2]/ul/li/div/div")).Click();
+
+                        WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+                    wait.Until<IWebElement>(d => d.FindElement(By.XPath("//*[@id=\"dropdown-menu\"]/div/div[2]/ul/li[20]/label"))).Click();
+                    wait.Until<IWebElement>(d => d.FindElement(By.XPath("//*[@id=\"dropdown-menu\"]/div/div[2]/ul/li[18]/label"))).Click();
+                    wait.Until<IWebElement>(d => d.FindElement(By.XPath("//*[@id=\"dropdown-menu\"]/div/div[2]/ul/li[12]/label"))).Click();
+
+                    //*[@id="dropdown-menu"]/div/div[2]/ul/li[20]/label/svg/path
+                    driver.FindElement(By.XPath("//*[@id=\"dropdown-menu\"]/button")).Click();
+                        driver.FindElement(By.XPath("//*[@id=\"screener-criteria\"]/div[2]/div[1]/div[3]/button[1]")).Click();
+                        element =  wait.Until<IWebElement>(d => d.FindElement(By.XPath("//*[@id=\"scr-res-table\"]/table/tbody/tr[1]")));
+
+                    bool nextPageRecordsExists = false;
                     do
                     {
-                        var web1 = new HtmlWeb();
-                        var doc1 = await web1.LoadFromWebAsync(uri.ToString() + $"?offset={pageOffset}&count={pageCount}");
-                        var _nodes = doc1.DocumentNode.SelectNodes("//*[@id=\"scr-res-table\"]/table/tbody/tr");
+                        if (nextPageRecordsExists)
+                        {
+                            driver.FindElement(By.XPath("//*[@id=\"fin-scr-res-table\"]/div[2]/div[2]/button[3]")).Click();
+                        }
+                        HtmlDocument doc = new HtmlDocument();
+                        doc.LoadHtml(driver.PageSource);
+                        var _nodes = doc.DocumentNode.SelectNodes("//*[@id=\"scr-res-table\"]/table/tbody/tr");
                         if (_nodes == null)
                         {
                             break;
                         }
-
                         foreach (var node in _nodes)
                         {
                             nodes.Add(node);
                         }
-                        var mr = doc1.DocumentNode.SelectSingleNode("//*[@id=\"fin-scr-res-table\"]/div[1]/div[1]/span[2]/span").InnerText.Split(' ')[2];
-                        matchingResults = Int16.Parse(mr);
-                        var lrt = doc1.DocumentNode.SelectSingleNode("//*[@id=\"fin-scr-res-table\"]/div[1]/div[1]/span[2]/span").InnerText.Split(' ')[0];
-                        var lr = doc1.DocumentNode.SelectSingleNode("//*[@id=\"fin-scr-res-table\"]/div[1]/div[1]/span[2]/span").InnerText.Split(' ')[0].Split(new char[]{(char)45, (char)8211})[0];
-                        lastRecord = Int16.Parse(lr);
-                        pageOffset += pageCount;
-                    } while (lastRecord < matchingResults);
+                        if (driver.FindElementSafe(By.XPath("//*[@id=\"fin-scr-res-table\"]/div[2]/div[2]/button[3]")) != null && driver.FindElement(By.XPath("//*[@id=\"fin-scr-res-table\"]/div[2]/div[2]/button[3]")).Displayed && driver.FindElement(By.XPath("//*[@id=\"fin-scr-res-table\"]/div[2]/div[2]/button[3]")).Enabled)
+                        { nextPageRecordsExists = true; }
+                        else
+                        {
+                            driver.Quit();
+                            nextPageRecordsExists = false; }
 
 
-                    if (nodes == null)
+                    } while (nextPageRecordsExists);
+
+
+                if (nodes == null)
                         return StockActiveList;
                     StockActiveDto stockActiveDto;
                     foreach (var node in nodes)

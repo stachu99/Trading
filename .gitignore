@@ -268,3 +268,4 @@ __pycache__/
 #Nlog databases and logs
 *.db3
 **/internal-nlog.txt
+/DataScraper/ThirdPart/Selenium/ChromeDriver/chromedriver.exe
