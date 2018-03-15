@@ -20,16 +20,15 @@ namespace DataScraper.Controllers
         }
 
 
-
         private StockActiveScraperService _StockActiveScraperService;
-        // GET: api/StockActive
+        // GET: api/YahooFinance/StockActive
         [HttpGet]
-        public async Task<IActionResult> Get(StockActiveQueryParameters stockActiveQueryParameters)
+        public IActionResult Get(StockActiveQueryParameters stockActiveQueryParameters)
         {
 
             _StockActiveScraperService = new StockActiveScraperService();
 
-            var StockActiveResult = _StockActiveScraperService.GetStockActives(stockActiveQueryParameters);
+            var StockActiveResult = _StockActiveScraperService.GetStockskActive(stockActiveQueryParameters);
             if (StockActiveResult == null)
             {
                 _logger.LogWarning($"{nameof(StockActiveController)} - {nameof(StockActiveResult)} = null");
