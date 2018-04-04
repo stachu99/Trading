@@ -20,6 +20,26 @@ namespace DataScraper.Services
         private int _filtersFailed = 0;
         private int _maxFilterFailed = 5;
         private StockActiveQueryParameters _stockActiveQueryParameters;
+        private string _xPathScreenerCriteriaBase = "//*[@id=\"screener-criteria\"]/div[2]/div[1]/div[1]";
+        private string _xPathScreenerCriteriaSectionFilterMenu = "";
+        private string _xPathScreenerCriteriaSectionFilterAddAnotherFilterButton = "";
+
+
+
+        //Region "//*[@id="screener-criteria"]/div[2]/div[1]/div[1]/div[1]/div/div[1]/span[1]/span"
+        //    //*[@id="screener-criteria"]/div[2]/div[1]/div[1]/div/div[2]/div/div[2]/div[1]/div/ul/li[29]/label
+
+        //    Volume (Intraday) "//*[@id="screener-criteria"]/div[2]/div[1]/div[1]/div[2]/div/div[1]/span[1]/span"
+        //    //*[@id="screener-criteria"]/div[2]/div[1]/div[1]/div[2]/div/div/div[2]/div[1]/div/ul/li[6]/label
+        //      *[@id="screener-criteria"]/div[2]/div[1]/div[1]/div[3]/div/div/div[2]/div[1]/div/ul/li[6]/label
+
+        //    Percent Change "//*[@id="screener-criteria"]/div[2]/div[1]/div[1]/div[3]/div/div[1]/span[1]/span"
+        //    //*[@id="screener-criteria"]/div[2]/div[1]/div[1]/div[2]/div/div/div[2]/div[1]/div/ul/li[28]/label
+
+        //    Market Cap (Intraday)
+        //    //*[@id="screener-criteria"]/div[2]/div[1]/div[1]/div[2]/div/div/div[2]/div[3]/div/ul/li[6]/label
+
+
 
 
         public IEnumerable<StockActiveDto> GetStockskActive(StockActiveQueryParameters stockActiveQueryParameters)
@@ -62,8 +82,6 @@ namespace DataScraper.Services
                 int pageOffset = 0;
                 HtmlNodeCollection nodes = new HtmlNodeCollection(null);
                 driver.Url = uri.ToString() + $"?offset={pageOffset}&count={pageCount}";
-
-
                 SetFilters(driver, _stockActiveQueryParameters);
 
 
@@ -154,25 +172,129 @@ namespace DataScraper.Services
         {
             if (_filtersFailed > _maxFilterFailed)
             {
-                _logger.Error($"Error - {this.GetType()} failed to set up filters {_maxFilterFailed.ToString()} timea.");
-                return;
+               throw new ArgumentException("Error - {this.GetType()} failed to set up filters {_maxFilterFailed.ToString()} timea.");
             }
             ClearFilters(driver);
             SetFilterRegion(driver, _stockActiveQueryParameters.Countries);
-            SetFilterVolume(driver);
-            SetFilterMarketCap(driver);
-
-
+            SetFilterMarketCap(driver , _stockActiveQueryParameters.MarketCapIntraday);
+            SetFilterVolumeIntraday(driver, _stockActiveQueryParameters.VolumeIntradayCondition, _stockActiveQueryParameters.VolumeIntraday, _stockActiveQueryParameters.VolumeIntraday2);
         }
 
-        private bool SetFilterMarketCap(IWebDriver driver)
+
+        private void SetFilterMarketCap(IWebDriver driver, List<string> marketCapsIntraday)
         {
-            throw new NotImplementedException();
+            List<string> marketCapsIntradayAll = new List<string>() { "Small Cap", "Mid Cap", "Large Cap", "Mega Cap" };
+            List<string> marketCapsIntradayFilter = new List<string>();
+            foreach (var marketCap in marketCapsIntraday)
+            {
+                if (marketCapsIntradayAll.Contains(marketCap))
+                {
+                    marketCapsIntradayFilter.Add(marketCap);
+                }
+            }
+            if (marketCapsIntradayFilter.Count == 0)
+            {
+                return;
+            }
+            try
+            {
+                //Click a button Add another filter
+                AddAnotherFilter(driver);
+                //click a checkbox Region
+                driver.FindElement(By.XPath($"{_xPathScreenerCriteriaBase}{_xPathScreenerCriteriaSectionFilterMenu}/div/div[2]/div[3]/div/ul/li[6]/label")).Click();
+                //filters-menu
+                SetXPathScreenerCriteriaSectionAddAnotherFilterAndMenu(driver);
+                //click a button Close dropdown add another filter
+                driver.FindElement(By.XPath($"{_xPathScreenerCriteriaBase}{_xPathScreenerCriteriaSectionFilterMenu}/div/div/button")).Click();
+                //Click an add Market Caps Intraday
+                var _xPathScreenerCriteriaSection = SetXPathScreenerCriteriaSection(driver, "Market Cap (Intraday)");
+                var buttons = driver.FindElementSafe(By.XPath($"{_xPathScreenerCriteriaBase}{_xPathScreenerCriteriaSection}/div/div[2]")).FindElements(By.TagName("button")).ToList();
+                if (buttons != null)
+                {
+                    foreach (var marketCap in marketCapsIntradayFilter)
+                    {
+                        foreach (var button in buttons)
+                        {
+                            try
+                            {
+                                if (button.GetAttribute("Title").Contains(marketCap))
+                                {
+                                    button.Click();
+                                }
+                            }
+                            catch (StaleElementReferenceException)
+                            {
+                                ;
+                            }
+
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                CheckFiltersFailed(driver);
+                throw;
+            }
+            return;
         }
 
-        private bool SetFilterVolume(IWebDriver driver)
+        private void SetFilterVolumeIntraday(IWebDriver driver, string volumeIntradayCondition, int volumeIntraday, int volumeIntraday2)
         {
-            throw new NotImplementedException();
+            List<string> VolumeIntradayConditionsAll = new List<string>() { "greater than", "less than", "equals", "between" };
+            if (!VolumeIntradayConditionsAll.Contains(volumeIntradayCondition))
+            {
+                return;
+            }
+            try
+            {
+                //Click a button Add another filter
+                AddAnotherFilter(driver);
+                //click a checkbox Volume (Intraday)
+                driver.FindElement(By.XPath($"{_xPathScreenerCriteriaBase}{_xPathScreenerCriteriaSectionFilterMenu}/div/div[2]/div[1]/div/ul/li[6]/label")).Click();
+                //filters-menu                      //*[@id="screener-criteria"]/div[2]/div[1]/div[1]/div[2]/div   /div/div[2]/div[1]/div/ul/li[6]/label
+                SetXPathScreenerCriteriaSectionAddAnotherFilterAndMenu(driver);
+                //click a button Close dropdown add another filter
+                driver.FindElement(By.XPath($"{_xPathScreenerCriteriaBase}{_xPathScreenerCriteriaSectionFilterMenu}/div/div/button")).Click();
+                //Click an add Volume (Intraday)
+                var _xPathScreenerCriteriaSection = SetXPathScreenerCriteriaSection(driver, "Volume (Intraday)");
+                driver.FindElementSafe(By.XPath($"{_xPathScreenerCriteriaBase}{_xPathScreenerCriteriaSection}/div/div[1]/span[2]/div")).Click();
+                var g = driver.FindElementSafe(By.XPath($"{_xPathScreenerCriteriaBase}{_xPathScreenerCriteriaSection}/div/div[1]/span[2]/div[2]"));
+                var volumeIntradayConditions = g.FindElements(By.Name("div")).ToList();
+                //< div class="Pstart(16px) Pend(32px) Pt(13px) Pb(13px) Cur(p) Bgc($extraLightBlue):h Bgc($extraLightBlue):f Fw(b)" data-value="gt"><span>greater than</span></div><div class="Pstart(16px) Pend(32px) Pt(13px) Pb(13px) Cur(p) Bgc($extraLightBlue):h Bgc($extraLightBlue):f" data-value="lt"><span>less than</span></div><div class="Pstart(16px) Pend(32px) Pt(13px) Pb(13px) Cur(p) Bgc($extraLightBlue):h Bgc($extraLightBlue):f" data-value="eq"><span>equals</span></div><div class="Pstart(16px) Pend(32px) Pt(13px) Pb(13px) Cur(p) Bgc($extraLightBlue):h Bgc($extraLightBlue):f" data-value="btwn"><span>between</span></div>
+                if (volumeIntradayConditions != null)
+                {
+                    foreach (var item in volumeIntradayConditions)
+                    {
+                        try
+                        {
+                            if (item.FindElement(By.Name("span")).Text == volumeIntradayCondition)
+                        {
+                                item.Click();
+                                var inputs = driver.FindElementSafe(By.XPath($"{_xPathScreenerCriteriaBase}{_xPathScreenerCriteriaSection}/div/div[2]")).FindElements(By.Name("input")).ToList();
+                                if (inputs != null)
+                                {
+                                    inputs[0].SendKeys(volumeIntraday.ToString());
+                                    if (inputs.Count == 2)
+                                    {
+                                        inputs[1].SendKeys(volumeIntraday2.ToString());
+                                    }
+                                }
+                            }
+                        }
+                        catch (StaleElementReferenceException)
+                        {
+                            ;
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                CheckFiltersFailed(driver);
+                throw;
+            }
+            return;
         }
 
         private void SetFilterRegion(IWebDriver driver, List<string> regions)
@@ -209,14 +331,17 @@ namespace DataScraper.Services
             };
             try
             {
-                // click a button Add another filter
-                driver.FindElement(By.XPath("//*[@id=\"screener-criteria\"]/div[2]/div[1]/div[1]/div/button")).Click();
+                //Click a button Add another filter
+                AddAnotherFilter(driver);
                 //click a checkbox Region
-                driver.FindElement(By.XPath("//*[@id=\"screener-criteria\"]/div[2]/div[1]/div[1]/div/div[2]/div/div[2]/div[1]/div/ul/li[29]/label")).Click();
+                driver.FindElement(By.XPath($"{_xPathScreenerCriteriaBase}{_xPathScreenerCriteriaSectionFilterMenu}/div/div[2]/div[1]/div/ul/li[29]/label")).Click();
+                //filters-menu
+                SetXPathScreenerCriteriaSectionAddAnotherFilterAndMenu(driver);
                 //click a button Close dropdown add another filter
-                driver.FindElement(By.XPath("//*[@id=\"screener-criteria\"]/div[2]/div[1]/div[1]/div[2]/div/div/button")).Click();
+                driver.FindElement(By.XPath($"{_xPathScreenerCriteriaBase}{_xPathScreenerCriteriaSectionFilterMenu}/div/div/button")).Click();
                 //Click an add regions
-                driver.FindElement(By.XPath("//*[@id=\"screener-criteria\"]/div[2]/div[1]/div[1]/div[1]/div/div[2]/ul/li/div/div")).Click();
+                var _xPathScreenerCriteriaSection = SetXPathScreenerCriteriaSection(driver, "Region");
+                driver.FindElement(By.XPath($"{_xPathScreenerCriteriaBase}{_xPathScreenerCriteriaSection}/div/div[2]/ul/li/div/div")).Click();
                 bool anyRegion = false;
                 foreach (var regionIntex in regionXPathLiIndexFilter.Values)
                 {
@@ -248,7 +373,83 @@ namespace DataScraper.Services
             return;
         }
 
+        private void AddAnotherFilter(IWebDriver driver)
+        {
+            SetXPathScreenerCriteriaSectionAddAnotherFilterAndMenu(driver);
+            driver.FindElement(By.XPath(_xPathScreenerCriteriaBase+_xPathScreenerCriteriaSectionFilterAddAnotherFilterButton)).Click();
+        }
 
+        private string SetXPathScreenerCriteriaSection(IWebDriver driver, string section)
+        {
+            string exceptionSetXPathScreenerCriteriaSectionFalse = $"Warm - {this.GetType()} failed to set up section - {section}.";
+
+            try
+            {
+                CheckFiltersFailed(driver);
+                HtmlDocument doc = new HtmlDocument();
+                doc.LoadHtml(driver.PageSource);
+                var criteriaSectionsCount = doc.DocumentNode.SelectSingleNode(_xPathScreenerCriteriaBase).ChildNodes.Count(x => x.Name == "div");
+                string div = "";
+                string xPathSectionEndPath = "/div/div[1]/span/span";
+                for (int i = 1; i <= criteriaSectionsCount; i++)
+                {
+                    div = $"/div[{i}]";
+                    var b = (doc.DocumentNode.SelectSingleNode($"{_xPathScreenerCriteriaBase}{div}{xPathSectionEndPath}"));
+                    //*[@id="screener-criteria"]/div[2]/div[1]/div[1]   /div[1] /div/div[1]/span[1]/span
+                    if (b != null && b.InnerText.Contains(section))
+                    {
+                        return $"{div}";
+                    }
+                }
+                CheckFiltersFailed(driver);
+                throw new ArgumentException(exceptionSetXPathScreenerCriteriaSectionFalse);
+            }
+            catch (Exception e)
+            {
+                CheckFiltersFailed(driver);
+                throw;
+            }
+        }
+        // Set XPathScreenerCriteriaSectionAddAnotherFilter - section of a button Add another filter
+        private void SetXPathScreenerCriteriaSectionAddAnotherFilterAndMenu(IWebDriver driver)
+        {
+            try
+            {
+                CheckFiltersFailed(driver);
+                HtmlDocument doc = new HtmlDocument();
+                doc.LoadHtml(driver.PageSource);
+                var criteriaSectionsCount = doc.DocumentNode.SelectSingleNode(_xPathScreenerCriteriaBase).ChildNodes.Count(x => x.Name == "div");
+                string xPathScreenerCriteriaSectionFilterMenu;
+                string div = "";
+                string xPathAddAnotherFilterEnd = "/button/span/span";
+                for (int i = criteriaSectionsCount; i>0; i--)
+                {
+                    div = $"/div[{i}]";
+                    xPathScreenerCriteriaSectionFilterMenu = $"{div}/div";
+                    if (i==1)
+                    {
+                        //div = "/div";
+                        xPathScreenerCriteriaSectionFilterMenu = $"{div}/div[2]";
+                        xPathAddAnotherFilterEnd = "/button/span[2]/span";
+                    }//*[@id="screener-criteria"]/div[2]/div[1]/div[1]/div/button
+                    //*[@id="screener-criteria"]/div[2]/div[1]/div[1]/div[2]/button
+                    //*[@id="screener-criteria"]/div[2]/div[1]/div[1]/div[2]/button/span/span
+                    var b = (doc.DocumentNode.SelectSingleNode($"{_xPathScreenerCriteriaBase}{div}{xPathAddAnotherFilterEnd}"));
+                    if (b != null && b.InnerText.Contains("Add another filter"))
+                    {//*[@id="screener-criteria"]/div[2]/div[1]/div[1]/div[2]/div/div/button
+                        _xPathScreenerCriteriaSectionFilterMenu = xPathScreenerCriteriaSectionFilterMenu;
+                        _xPathScreenerCriteriaSectionFilterAddAnotherFilterButton = $"{div}/button";
+                        return;
+                    }
+                }
+                CheckFiltersFailed(driver);
+            }
+            catch (Exception e)
+            {
+                CheckFiltersFailed(driver);
+                throw;
+            }
+        }
         private void ClearFilters(IWebDriver driver)
         {
             try

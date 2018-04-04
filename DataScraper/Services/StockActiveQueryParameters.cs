@@ -26,7 +26,10 @@ namespace DataScraper.Services
                 _countries = value;
             }
         }
-
+        public List<string> MarketCapIntraday { get; set; } = new List<string> {"Large Cap","Mega Cap"};
+        public string VolumeIntradayCondition { get; set; } = "greater than";
+        public int VolumeIntraday { get; set; } = 50000000;
+        public int VolumeIntraday2 { get; set; }
 
         public string OrderBy { get; set; } = "ChangePercentage";
         private bool _descending = false;
